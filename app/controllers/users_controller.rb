@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def add_note
     @note = current_user.notes.find params[:note_id]
-    @user.guest_notes >> @note
+    @user.guest_notes &lt;&lt; @note
 
     NoteMailer.new_note_permission(@note, @user).deliver_now
     render json: {message: "Compartilhamento bem sucedido!"}, status: :ok
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     @user.guest_notes.delete(@note.id)
 
     NoteMailer.permission_revoked(@note, @user).deliver_now
-    render json: {message: "Permissão revogada!"}, status: :ok
+    render json: {message: "Permissão revogada com sucesso!"}, status: :ok
   end
 
   private
