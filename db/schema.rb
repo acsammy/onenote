@@ -11,7 +11,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170609230833) do
+ActiveRecord::Schema.define(version: 20170721003517) do
+
+  create_table "notes", force: :cascade do |t|
+    t.string   "title"
+    t.text     "body"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "notes", ["user_id"], name: "index_notes_on_user_id"
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "tags", ["user_id"], name: "index_tags_on_user_id"
+
+  create_table "tags_notes", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.integer  "note_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "tags_notes", ["note_id"], name: "index_tags_notes_on_note_id"
+  add_index "tags_notes", ["tag_id"], name: "index_tags_notes_on_tag_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -30,5 +59,15 @@ ActiveRecord::Schema.define(version: 20170609230833) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+
+  create_table "users_notes", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "note_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "users_notes", ["note_id"], name: "index_users_notes_on_note_id"
+  add_index "users_notes", ["user_id"], name: "index_users_notes_on_user_id"
 
 end
